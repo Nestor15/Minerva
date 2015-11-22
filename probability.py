@@ -5,10 +5,10 @@ in Risk battles, invasions, and campaigns.
 """
 
 """
-casualty_odds is a table of possible casualty numbers and their probabilities
+csualty_odds is a table of possible casualty numbers and their probabilities
 for the 6 possible battle scenarios
 """
-casualty_odds = (
+csualty_odds = (
 # Row for 1 attacker scenarios
 (
     # 1 attacker, 1 defender
@@ -46,14 +46,14 @@ def calculate_battle(attackers, defenders, chance=1):
     outcomes after one round of battle.
     """
     # Include the external casualty table in the function
-    global casualty_odds
+    global csualty_odds
     
     # Set the number of dice to the maximum allowed for attacker and defender
     a = min(attackers, 3)
     d = min(defenders, 2)
     
     # Retrieve the possible troop losses for each side and their chances
-    casualty_possibilities = casualty_odds[a-1][d-1] # Subtract 1 for indexing
+    casualty_possibilities = csualty_odds[a-1][d-1] # Subtract 1 for indexing
     
     # Use possible troop losses to calculate possible outcomes
     outcomes = []
@@ -64,23 +64,32 @@ def calculate_battle(attackers, defenders, chance=1):
     # Return the outcomes in immutable, tuple form
     return tuple(outcomes)
 
-def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
+def calculate_invasion(attackers, defenders, a_min=0, d_min=0):
     """
-    Accepts an invasion scenario (number of attackers and defenders), including
-    when the attacker will retreat, and its chance of happening. Returns a
-    dictionary of all possible outcomes and their probabilities.
+    Accepts an invasion scenario, including when the attacker will retreat.
+    Returns a dictionary of all possible outcomes and their probabilities.
+    
+    Attackers isn't just the number of attackers: it's a dictionary of all
+    possible numbers of attackers and the probabilities of the attack having
+    that many units. The defenders argument, however, is just a number, as the
+    number of defenders won't vary in the calculations this app does.
     """
+    # Find the highest possible number of attackers in the invasion
+    max_attackers = 0
+    for attacker_number in attackers:
+        max_attackers = max(max_attackers, attacker_number)
     
     # Create a grid of possible states of the invasion and their odds.
     # Only states within the boundaries of starting troop numbers and troop
     # minimums are included in the grid. Possible scenarios are referenced
     # using odds_grid[attackers - a_min][defenders - d_min]
-    x_max = attackers - a_min
+    x_max = max_attackers - a_min
     y_max = defenders - d_min
     odds_grid = [[0 for y in range(y_max+1)] for x in range(x_max+1)]
     
-    # Set the probability for the initial state (usually 100%)
-    odds_grid[x_max][y_max] = chance
+    # Set probabilities initial states for all possible attacker troop numbers
+    for troops, prob in attackers.items():
+        odds_grid[troops - a_min][y_max] = prob
     
     # Initialize the dictionary of outcomes (keys) and probabilities (values)
     outcomes = {}
