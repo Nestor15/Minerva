@@ -139,11 +139,12 @@ def calculate_campaign(attackers, targets, a_min=0):
     """
     calculate_campaign() accepts the number of troops in the attacking
     territory, a list of troop numbers of target territories (in sequence) and
-    the minimum number of troops the attacker wants in the final territory. The
-    function returns the probabilities of all possible outcomes in an array of
-    dictionaries. The array indices represent the territory the campaign ended
-    in (0 being the origin of the attacks), the dictionary contents the number
-    of attackers in the territory and defenders in the next territory.
+    the minimum number of troops the attacker wants in the final territory.
+    
+    The function returns the probabilities of all possible outcomes in an array
+    of dictionaries. The array indices represent the territory the campaign
+    ended in (0 being the origin of the attacks), the dictionary contents the
+    number of attackers in the territory and defenders in the next territory.
     """
     #Initialize outcomes array
     outcomes = [{} for territory in range(targets+1)] # +1 for origin territory
@@ -152,27 +153,39 @@ def calculate_campaign(attackers, targets, a_min=0):
     a_dict = {attackers : 1}
     
     # Loop through each target territory, calculating possible outcomes
-    for origin_territory, defenders in enumerate(targets):
+    for origin, defenders in enumerate(targets):
         # First, adjust the number of attackers for the one unit left behind
-        new_dict = {}
-        # TODO for loop for -1 replacement
-        # Don't forget to remove the 0 attacker entry resulting from this
+        # Remove the scenario where the attacking force is below minimum
+        if a_dict.get(a_min):
+            outcomes[origin][(a_min, defenders)] = a_dict[a_min]
+            del(a_dict[a_min])
         
-        # Calculate the outcomes of this invasion
+        # Subtract 1 from each attacker number for the unit left behind
+        new_a_dict = {}
+        for attackers, probability in a_dict.items():
+            new_a_dict[attackers-1] = probability
+        
+        a_dict = new_a_dict
+        
+        # Calculate the outcomes of this invasion and loop through them
         results = calculate_invasion(a_dict, defenders, a_min)
-        # Loop through each outcome of the invasion
+        # Clear out a_dict to store the new results
+        a_dict = {}
         for result, probability in results.items():
             a = result[0]
             d = result[1]
             # If no defenders remain, it's a win
             if d == 0:
-                # Add its attacker # and probability to a_dict for next combat
+                # Add the number of attackers and probability to a_dict
                 a_dict[a] = probability
+            # Otherwise, the attack failed
             else:
-                # If the attacker lost, add the scenario directly to outcomes
-                outcomes[origin_territory][a] = probability
-        
-        # TODO add clean-up code, check for empty a_dict, etc.
+                # Add the probability to the correct spot in outcomes
+                # If that spot doesn't yet exist for the scenario, make it
+                if not outcomes[origin].get((a+1, d)):
+                    outcomes[origin][(a+1, d)] = 0
+                
+                outcomes[origin][(a+1, d)] += probability
     
     # Add values remaining in a_dict (successes) to outcomes and return
     for attackers_remaining, probability in a_dict.items():
