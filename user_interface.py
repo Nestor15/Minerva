@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """
 This module defines user interface functions for the Risk program
 """
@@ -11,6 +9,7 @@ def print_scenario(attackers, defenders, a_min=0, d_min=0, verbose=False):
     Displays the invasion scenario that we're calculating probabilities for.
     """
     if verbose:
+        # Grammar isn't very cooperative when it comes to concise coding
         if attackers == 1:
             print('1 attacker vs. ', end='')
         else:

@@ -71,15 +71,16 @@ verbose = options.verbose
 
 # Make sure that the minimums are less than the troop numbers
 # If not, print an error message and exit
-if attackers <= a_min:
+if not a_min < attackers:
     error_msg = 'the argument \'retreat\' must be less than \'attackers\''
     parser.error(error_msg)
 
-if defenders <= d_min:
+if not d_min < defenders:
     error_msg = 'the argument \'goal\' must be less than \'defenders\''
     parser.error(error_msg)
 
 # Now that we've ensured the arguments are valid, let's use them!
+
 # Do interactive mode if the user used the -i flag
 if interactive:
     interactive_mode(attackers, defenders, a_min, d_min, verbose)
