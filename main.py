@@ -88,4 +88,4 @@ if interactive:
 else:
     print_scenario(attackers, defenders, a_min, d_min, verbose)
     odds = calculate_invasion(attackers, defenders, a_min, d_min)
-    print_odds(odds, d_min, verbose)
+    print_invasion_odds(odds, d_min, verbose)

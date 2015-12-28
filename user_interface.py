@@ -37,17 +37,13 @@ def print_scenario(attackers, defenders, a_min=0, d_min=0, verbose=False):
         if d_min:
             print('g: %d' % d_min)
 
-def print_odds(outcomes, d_min, verbose=False):
+def print_invasion_odds(outcomes, d_min, verbose=False):
     """
     Accepts the results of calculate_invasion(), sums the probabilities of all
     successful outcomes using d_min, and prints the final result.
     """
-    # We don't need a_min, only d_min because it takes precedence
-    # Add up the odds of all the outcomes favorable to the attacker
-    victory_prob = 0
-    for o in outcomes:
-        if o[1] <= d_min:
-            victory_prob += outcomes[o]
+    # Get the odds of all the outcomes favorable to the attacker
+    victory_prob = sum_invasion_odds(outcomes, d_min)
     
     # Print the chances of a successful invasion as a percentage
     percent = victory_prob * 100
@@ -68,7 +64,7 @@ def interactive_mode(attackers, defenders, a_min=0, d_min=0, verbose=False):
         
         # Calculate and print the probabilities of the scenario's outcomes
         outcomes = calculate_invasion(attackers, defenders, a_min, d_min)
-        print_odds(outcomes, d_min, verbose)
+        print_invasion_odds(outcomes, d_min, verbose)
         
         # Receive a new command or scenario update.
         command = input('> ')
