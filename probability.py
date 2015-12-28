@@ -85,14 +85,10 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
     # Initialize the dictionary of outcomes (keys) and probabilities (values)
     outcomes = {}
     
-    # Loop through the grid, from the top-right to the lower-left, calculating
-    # the probabilities of all possible states and outcomes of the battle.
-    for distance in range(x_max + y_max + 1):
-        # Create a diagonal a distance from the top-right and loop through it
-        x_start = max(0, x_max - distance)
-        y_start = min(y_max, y_max - (distance - x_max))
-        diagonal = zip(range(x_start, x_max + 1), range(y_start, -1, -1))
-        for x, y in diagonal:
+    # Loop through the grid, from the rightmost column to the left, starting
+    # at the highest cell of each column.
+    for x in range(x_max, -1, -1):
+        for y in range(y_max, -1, -1):
             # Retrieve the probability of the current state
             prob = odds_grid[x][y]
             
@@ -116,11 +112,7 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
                     continue
                 
                 # Add the probability to the proper odds_grid position
-                x = state[0] - a_min
-                y = state[1] - d_min
-                
-                odds_grid[x][y] += state[2]
-    
+                odds_grid[state[0] - a_min][state[1] - d_min] += state[2]
     
     # Finally, return the possible outcomes and their probabilities
     return outcomes
