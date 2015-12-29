@@ -74,12 +74,16 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0):
     argument, however, is just a number, as the number of defenders won't vary
     in the calculations this app does.
     """
-    # First, test is attackers is just a number or a dictionary with odds
+    # First, test if attackers is a dictionary or just an integer
     if isinstance(attackers, int):
         max_attackers = attackers
+    elif len(attackers) == 1:
+        # If there's only one number in the dictionary, it's the maximum
+        # TODO find a better way to do this
+        max_attackers = list(attackers.keys())[0]
     else:
-        # Find the highest possible number of attackers in the invasion
-        max_attackers = max(*attackers)
+        # If there's more than one, use max()
+        max_attackers = max(*attackers.keys())
     
     # Now use the highest (or only) attacker number to create odds_grid
     

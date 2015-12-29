@@ -3,8 +3,6 @@
 import argparse as ap
 from user_interface import *
 
-# First, handle argument parsing with the argparse module
-
 # We need to create a special argument conversion function for troop numbers
 def positive_int(string):
     """
@@ -31,12 +29,12 @@ parser = ap.ArgumentParser(description='Calculates probabilities for Risk')
 
 # Arguments for number of attackers and defenders
 parser.add_argument('attackers', type=positive_int,
-    help='number of attackers in the invasion scenario')
+    help='number of attackers in the attack scenario')
 
-parser.add_argument('defenders', type=positive_int,
-    help='number of defenders in the invasion scenario')
+# Defenders can be a list (for campaigns)
+parser.add_argument('defenders', type=positive_int, nargs='+',
+    help='defender troop count(s) in the attack scenario')
 
-# Next, add arguments for attacker and defender minimums
 parser.add_argument('-r', '--retreat', type=positive_int, default=0,
     metavar='R',
     help='represents when the attacker will retreat. Any scenarios in which '
@@ -48,12 +46,10 @@ parser.add_argument('-g', '--goal', type=positive_int, default=0, metavar='G',
          'to. Any outcomes in which the defender\'s army size reaches or '
          'falls below this number are counted as successful by the program.')
 
-# Add the -i flag for interactive mode
 parser.add_argument('-i', '--interactive', action='store_true',
     help='use interactive mode. The program will prompt the user for updates '
          'to the invasion, then outputs an updated probability of success.')
 
-# Add a -v flag for verbosity
 parser.add_argument('-v', '--verbose', action='store_true',
     help='verbosely print probabilities and unit counts')
 
@@ -75,17 +71,26 @@ if not a_min < attackers:
     error_msg = 'the argument \'retreat\' must be less than \'attackers\''
     parser.error(error_msg)
 
-if not d_min < defenders:
-    error_msg = 'the argument \'goal\' must be less than \'defenders\''
-    parser.error(error_msg)
+for d in defenders:
+    if not d_min < d:
+        error_msg = 'the argument \'goal\' must be less than \'defenders\''
+        parser.error(error_msg)
 
 # Now that we've ensured the arguments are valid, let's use them!
 
+# TODO add campaign mode (include argument & help changes above)
+# If there's more than 1 defending territory, it's campaign mode
+if len(defenders) > 1:
+    #TODO make print_campaign() and print_campaign_odds()
+    print_campaign(attackers, defenders, a_min)
+    odds = calculate_campaign(attackers, defenders, a_min)
+    print_campaign_odds(odds)
+# TODO fix this crappy decision structure
 # Do interactive mode if the user used the -i flag
 if interactive:
     interactive_mode(attackers, defenders, a_min, d_min, verbose)
 #Otherwise, just calculate and print the odds of success
 else:
-    print_scenario(attackers, defenders, a_min, d_min, verbose)
+    print_invasion(attackers, defenders, a_min, d_min, verbose)
     odds = calculate_invasion(attackers, defenders, a_min, d_min)
     print_invasion_odds(odds, d_min, verbose)

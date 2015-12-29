@@ -4,7 +4,7 @@ This module defines user interface functions for the Risk program
 
 from probability import *
 
-def print_scenario(attackers, defenders, a_min=0, d_min=0, verbose=False):
+def print_invasion(attackers, defenders, a_min=0, d_min=0, verbose=False):
     """
     Displays the invasion scenario that we're calculating probabilities for.
     """
@@ -21,20 +21,20 @@ def print_scenario(attackers, defenders, a_min=0, d_min=0, verbose=False):
             print('%d defenders' % defenders)
         
         # Only print minimums if they're non-zero
-        if a_min:
+        if a_min != 0:
             print('The attacker wants to win with at least %d units.' % a_min)
         
-        if d_min:
+        if d_min != 0:
             print('The attacker wants to reduce the defender to %d units.' % d_min)
     else:
         # If not verbose, just print the numbers
         print('%d vs. %d' % (attackers, defenders))
         
         # Only print minimums if they're non-zero
-        if a_min:
+        if a_min != 0:
             print('r: %d' % a_min)
         
-        if d_min:
+        if d_min != 0:
             print('g: %d' % d_min)
 
 def print_invasion_odds(outcomes, d_min, verbose=False):
@@ -53,14 +53,14 @@ def print_invasion_odds(outcomes, d_min, verbose=False):
     else:
         print('%.1f%%' % percent)
 
-def interactive_mode(attackers, defenders, a_min=0, d_min=0, verbose=False):
+def interactive_invasion(attackers, defenders, a_min=0, d_min=0, verbose=False):
     """
     Prompts user for updates to the invasion scenario, then calculates and
     prints updated odds of success.
     """
     while attackers > a_min and defenders > d_min:
         # Print the current invasion scenario
-        print_scenario(attackers, defenders, a_min, d_min, verbose)
+        print_invasion(attackers, defenders, a_min, d_min, verbose)
         
         # Calculate and print the probabilities of the scenario's outcomes
         outcomes = calculate_invasion(attackers, defenders, a_min, d_min)
@@ -104,3 +104,28 @@ def interactive_mode(attackers, defenders, a_min=0, d_min=0, verbose=False):
                     print('The attacker has won with %d armies.' % attackers)
         else:
             print('%d vs. %d' % (attackers, defenders))
+
+def print_campaign(attackers, targets, a_min=0, verbose=False):
+    if verbose:
+        print('There\'s no verbose mode yet, buddy. Move along.')
+        return None
+    
+    print('%d vs. %s' % (attackers, targets))
+    
+    # Only print the retreat value if it was set (i.e. isn't zero)
+    if a_min != 0:
+        print('r: %d' % a_min)
+
+def print_campaign_odds(outcomes):
+    """
+    Accepts the results of calculate_campaign(), sums the probabilities of all
+    successful outcomes, and prints the final result.
+    """
+    # Get the odds of all the outcomes favorable to the attacker
+    victory_prob = sum_campaign_odds(outcomes)
+    
+    # Print the chances of a successful invasion as a percentage
+    percent = victory_prob * 100
+    
+    # Print the percentage of the campaign's success
+    print('%.1f%%' % percent)
