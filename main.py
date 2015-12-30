@@ -13,21 +13,20 @@ def positive_int(string):
         value = int(string)
     except ValueError:
         # If it fails, raise an exception with an error message
-        err_msg = '\'%s\' is not a positive integer' % string
-        raise ap.ArgumentTypeError(err_msg)
+        error_msg = '\'%s\' is not a positive integer' % string
+        raise ap.ArgumentTypeError(error_msg)
     
     # If the integer conversion worked, make sure it's positive
     if value <= 0:
         # If not, raise an exception and tell the user
-        err_msg = '\'%d\' is not a positive integer' % value
-        raise ap.ArgumentTypeError(err_msg)
+        error_msg = '\'%d\' is not a positive integer' % value
+        raise ap.ArgumentTypeError(error_msg)
     
     return value
 
 # Create a new parser object, which we'll add the arguments to
 parser = ap.ArgumentParser(description='Calculates probabilities for Risk')
 
-# Arguments for number of attackers and defenders
 parser.add_argument('attackers', type=positive_int,
     help='number of attackers in the attack scenario')
 
@@ -65,16 +64,29 @@ d_min = options.goal
 interactive = options.interactive
 verbose = options.verbose
 
+# Error Checking
+
+# Make sure the user didn't use options incompatible with campaign mode
+if len(defenders) > 1:
+    if d_min != 0:
+        error_msg = '\'-g\' is incompatible with multiple defender troop counts'
+        parser.error(error_msg)
+    elif interactive:
+        error_msg = 'no interactive mode for multiple defender troop counts (yet)'
+        parser.error(error_msg)
+    elif verbose:
+        error_msg = 'no verbose mode for multiple defender troop counts (yet)'
+        parser.error(error_msg)
+
 # Make sure that the minimums are less than the troop numbers
-# If not, print an error message and exit
 if not a_min < attackers:
     error_msg = 'the argument \'retreat\' must be less than \'attackers\''
     parser.error(error_msg)
 
-for d in defenders:
-    if not d_min < d:
-        error_msg = 'the argument \'goal\' must be less than \'defenders\''
-        parser.error(error_msg)
+# We can assume defenders has only 1 value if d_min is set
+if not d_min < defenders[0]:
+    error_msg = 'the argument \'goal\' must be less than \'defenders\''
+    parser.error(error_msg)
 
 # Now that we've ensured the arguments are valid, let's use them!
 
