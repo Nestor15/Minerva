@@ -78,19 +78,19 @@ for d in defenders:
 
 # Now that we've ensured the arguments are valid, let's use them!
 
-# TODO add campaign mode (include argument & help changes above)
 # If there's more than 1 defending territory, it's campaign mode
 if len(defenders) > 1:
-    #TODO make print_campaign() and print_campaign_odds()
     print_campaign(attackers, defenders, a_min)
     odds = calculate_campaign(attackers, defenders, a_min)
     print_campaign_odds(odds)
-# TODO fix this crappy decision structure
-# Do interactive mode if the user used the -i flag
-if interactive:
-    interactive_mode(attackers, defenders, a_min, d_min, verbose)
-#Otherwise, just calculate and print the odds of success
+# If there's only 1 territory, it's standard or interactive mode
 else:
-    print_invasion(attackers, defenders, a_min, d_min, verbose)
-    odds = calculate_invasion(attackers, defenders, a_min, d_min)
-    print_invasion_odds(odds, d_min, verbose)
+    # Extract the single defender value from the array
+    defenders = defenders[0]
+    
+    if interactive:
+        interactive_invasion(attackers, defenders, a_min, d_min, verbose)
+    else:
+        print_invasion(attackers, defenders, a_min, d_min, verbose)
+        odds = calculate_invasion(attackers, defenders, a_min, d_min)
+        print_invasion_odds(odds, d_min, verbose)
