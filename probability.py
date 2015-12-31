@@ -153,9 +153,9 @@ def sum_invasion_odds(outcomes, d_min=0):
 
 def calculate_campaign(attackers, targets, a_min=0):
     """
-    calculate_campaign() accepts the number of troops in the attacking
-    territory, a list of troop numbers of target territories (in sequence) and
-    the minimum number of troops the attacker wants in the final territory.
+    calculate_campaign() accepts the number of attacking troops, a list of
+    troop numbers of target territories (in sequence) and the minimum number of
+    troops the attacker wants in the final territory.
     
     The function returns the probabilities of all possible outcomes in an array
     of dictionaries. The array indices represent the territory the campaign
@@ -163,11 +163,12 @@ def calculate_campaign(attackers, targets, a_min=0):
     number of attackers and defenders in the territory, the values the
     probability of the outcome.
     """
-    #Initialize outcomes array
-    outcomes = [{} for territory in range(len(targets)+1)] # +1 for origin territory
+    #Initialize outcomes array (+1 for the origin territory)
+    outcomes = [{} for territory in range(len(targets)+1)]
     
     # a_dict contains chances of attacker counts in current attacking territory
-    a_dict = {attackers : 1}
+    # The +1 is to add back the unit left behind in the territory
+    a_dict = {attackers+1 : 1}
     
     # Loop through each target territory, calculating possible outcomes
     for origin, defenders in enumerate(targets):
