@@ -88,7 +88,7 @@ if not d_min < defenders[0]:
     error_msg = 'the argument \'goal\' must be less than \'defenders\''
     parser.error(error_msg)
 
-# Now that we've ensured the arguments are valid, let's use them!
+# Arguments have been checked; now decide what to do with them
 
 # If there's more than 1 defending territory, it's campaign mode
 if len(defenders) > 1:

@@ -172,8 +172,7 @@ def calculate_campaign(attackers, targets, a_min=0):
     
     # Loop through each target territory, calculating possible outcomes
     for origin, defenders in enumerate(targets):
-        # First, adjust the number of attackers for the one unit left behind
-        # Remove the scenario where the attacking force is below minimum
+        # Remove the scenario where the force won at minimum
         if a_dict.get(a_min):
             outcomes[origin][(a_min, defenders)] = a_dict[a_min]
             del(a_dict[a_min])
