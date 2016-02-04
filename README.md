@@ -7,8 +7,23 @@ number of units. It also has an interactive mode for reevaluating the
 likelihood of an attack's success as it is underway.
 
 ##Installation
-You will need Python 3 to use minerva. For now, there's no easy installation
-method, so just download the scripts and drop them in /usr/local/bin.
+You will need Python 3 and pip to install minerva.
+
+To install:
+
+    $ cd Minerva/
+    $ pip3 install -e .
+    $ minerva --help
+
+To install in a virtual environment:
+
+    $ cd Minerva/
+    $ pyvenv env
+    $ env/bin/pip3 install -e
+    $ env/bin/minerva --help
+
+Note: The `-e` means editable mode, where the source files are linked to
+instead of copied. This allows you to edit and run them if you wish.
 
 ##Usage
 ###Basic Invasion Success Probability

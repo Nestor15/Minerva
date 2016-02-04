@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import argparse as ap
-from user_interface import *
+from .user_interface import *
 
 # We need to create a special argument conversion function for troop numbers
 def positive_int(string):

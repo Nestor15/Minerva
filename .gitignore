@@ -11,3 +11,7 @@ Old/
 #Also ignore testing scripts
 *script.py
 *test.py
+
+# Ignore virtualenv
+env
+*.egg-info
