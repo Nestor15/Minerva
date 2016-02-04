@@ -23,7 +23,8 @@ To install in a virtual environment:
     $ env/bin/minerva --help
 
 Note: The `-e` means editable mode, where the source files are linked to
-instead of copied. This allows you to edit and run them if you wish.
+instead of copied. This allows you to edit and run them if you wish. You may
+need to add ~/.local/bin to your PATH if you use `-e`.
 
 ##Usage
 ###Basic Invasion Success Probability
