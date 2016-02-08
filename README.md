@@ -19,7 +19,7 @@ To install in a virtual environment:
 
     $ cd Minerva/
     $ pyvenv env
-    $ env/bin/pip3 install -e
+    $ env/bin/pip3 install -e .
     $ env/bin/minerva --help
 
 Note: The `-e` means editable mode, where the source files are linked to
