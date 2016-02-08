@@ -9,8 +9,8 @@ Old/
 *.py[cod]
 
 #Also ignore testing scripts
-*script.py
 *test.py
+*.sh
 
 # Ignore virtualenv
 env
