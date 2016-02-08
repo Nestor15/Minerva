@@ -88,8 +88,7 @@ def parse_args():
 
 def run():
     """
-    I just stuffed the rest of main's code into this function to fix th issue
-    with the setup.py for now. I'll make it pretty later.
+    The main method of minerva.
     """
     # Get args from our parse_args function (which uses the argparse module)
     args = parse_args()
