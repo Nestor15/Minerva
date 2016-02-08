@@ -125,3 +125,17 @@ interactive mode in action:
     5 vs. 0
 
 Both the ```-r``` and ```-g``` flags are compatible with interactive mode.
+
+###Campaign Mode
+Minerva can also be used to calculate the success of a series or invasions from
+a single territory, or *campaign*. To do this, simply provide more than one
+defender unit count, in order of attack, like so:
+
+    $ minerva 8 1 1 3
+    8 vs. [1, 1, 3]
+    73.6%
+
+You can add the ```-r``` option just as you would to a normal invasion
+scenario, but not the ```-g``` option. For now, there is no support for either
+the ```-v``` or ```-i``` flag.
+

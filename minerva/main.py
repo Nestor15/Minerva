@@ -63,7 +63,7 @@ def parse_args():
     # Error Checking
     # Make sure the user didn't use options incompatible with campaign mode
     if len(options.defenders) > 1:
-        if goal != 0:
+        if options.goal != 0:
             error_msg = '\'-g\' is incompatible with multiple defender troop counts'
             parser.error(error_msg)
         elif options.interactive:
