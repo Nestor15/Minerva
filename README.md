@@ -76,9 +76,9 @@ Blue force to 2 or lower, Green can run this command:
     80.0%
 
 Now Green knows that, if she's willing to sacrifice her entire attacking force,
-she has an 80% chance of reducing Blue's force to only 2 units. The -g option,
-the 2 in this command, is the *goal value* of the attack, another name for the
-intended number of defenders at the attack's end.
+she has an 80% chance of reducing Blue's force to only 2 units. The ```-g```
+option, 2 in this command, is the *goal value* of the attack, another name for
+the intended number of defenders at the attack's end.
 
 Note that it's possible for Green to reduce Blue's force to 1 below the goal
 value (in this case, 1) because 2 units can be lost each round of combat.
@@ -91,10 +91,6 @@ The goal and retreat value options can be combined. If you want to wear down an
 opponent's forces without losing too many of your own, run a command such as
 
     $ minerva 10 6 -g 2 -r 5
-    10 vs. 6
-    r: 5
-    g: 2
-    69.1%
 
 ###Interactive Mode
 The above uses of minerva are great for evaluating a potential attack, but
