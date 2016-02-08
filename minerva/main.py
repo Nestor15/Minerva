@@ -3,7 +3,6 @@
 import argparse as ap
 from .user_interface import *
 
-# We need to create a special argument conversion function for troop numbers
 def positive_int(string):
     """
     positive_int() converts args to positive integers for troop numbers
@@ -19,15 +18,16 @@ def positive_int(string):
     # If the integer conversion worked, make sure it's positive
     if value <= 0:
         # If not, raise an exception and tell the user
-        error_msg = '\'%d\' is not a positive integer' % value
+        error_msg = '%d is not a positive integer' % value
         raise ap.ArgumentTypeError(error_msg)
     
     return value
 
-def run():
+def parse_args():
     """
-    I just stuffed the rest of main's code into this function to fix th issue
-    with the setup.py for now. I'll make it pretty later.
+    Uses argparse to parse the specific arguments for minerva. THIS IS NOT THE
+    SAME AS THE ARGPARSE MODULE'S ARG_PARSE() FUNCTION; there just happens to
+    be no better way to name a function that parses arguments.
     """
     # Create a new parser object, which we'll add the arguments to
     parser = ap.ArgumentParser(description='Calculates probabilities for Risk')
@@ -57,48 +57,58 @@ def run():
     parser.add_argument('-v', '--verbose', action='store_true',
         help='verbosely print probabilities and unit counts')
 
-    # Parse the arguments and extract all important data
+    # Parse the arguments
     options = parser.parse_args();
 
-    attackers = options.attackers
-    defenders = options.defenders
-
-    a_min = options.retreat
-    d_min = options.goal
-
-    interactive = options.interactive
-    verbose = options.verbose
-
     # Error Checking
-
     # Make sure the user didn't use options incompatible with campaign mode
-    if len(defenders) > 1:
-        if d_min != 0:
+    if len(options.defenders) > 1:
+        if goal != 0:
             error_msg = '\'-g\' is incompatible with multiple defender troop counts'
             parser.error(error_msg)
-        elif interactive:
+        elif options.interactive:
             error_msg = 'no interactive mode for multiple defender troop counts (yet)'
             parser.error(error_msg)
-        elif verbose:
+        elif options.verbose:
             error_msg = 'no verbose mode for multiple defender troop counts (yet)'
             parser.error(error_msg)
 
     # Make sure that the minimums are less than the troop numbers
-    if not a_min < attackers:
+    if not options.retreat < options.attackers:
         error_msg = 'the argument \'retreat\' must be less than \'attackers\''
         parser.error(error_msg)
 
-    # We can assume defenders has only 1 value if d_min is set
-    if not d_min < defenders[0]:
+    # We can assume defenders has only 1 value if goal is set
+    if not options.goal < options.defenders[0]:
         error_msg = 'the argument \'goal\' must be less than \'defenders\''
         parser.error(error_msg)
+    
+    # Finally, return the arguments
+    return options
 
-    # Arguments have been checked; now decide what to do with them
-
+def run():
+    """
+    I just stuffed the rest of main's code into this function to fix th issue
+    with the setup.py for now. I'll make it pretty later.
+    """
+    # Get args from our parse_args function (which uses the argparse module)
+    args = parse_args()
+    
+    attackers = args.attackers
+    defenders = args.defenders
+    
+    retreat = args.retreat
+    goal = args.goal
+    
+    interactive = args.interactive
+    verbose = args.verbose
+    
+    # parse_args() handles the error-checking, so we're good to go
+    
     # If there's more than 1 defending territory, it's campaign mode
     if len(defenders) > 1:
-        print_campaign(attackers, defenders, a_min)
-        odds = calculate_campaign(attackers, defenders, a_min)
+        print_campaign(attackers, defenders, retreat)
+        odds = calculate_campaign(attackers, defenders, retreat)
         print_campaign_odds(odds)
     # If there's only 1 territory, it's standard or interactive mode
     else:
@@ -106,8 +116,8 @@ def run():
         defenders = defenders[0]
         
         if interactive:
-            interactive_invasion(attackers, defenders, a_min, d_min, verbose)
+            interactive_invasion(attackers, defenders, retreat, goal, verbose)
         else:
-            print_invasion(attackers, defenders, a_min, d_min, verbose)
-            odds = calculate_invasion(attackers, defenders, a_min, d_min)
-            print_invasion_odds(odds, d_min, verbose)
+            print_invasion(attackers, defenders, retreat, goal, verbose)
+            odds = calculate_invasion(attackers, defenders, retreat, goal)
+            print_invasion_odds(odds, goal, verbose)
