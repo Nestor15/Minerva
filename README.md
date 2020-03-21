@@ -6,7 +6,7 @@ number of troops left and/or wearing the enemy's forces down to a specified
 number of units. It also has an interactive mode for reevaluating the
 likelihood of an attack's success as it is underway.
 
-##Installation
+## Installation
 You will need Python 3 and pip to install minerva.
 
 To install:
@@ -26,8 +26,8 @@ Note: The `-e` means editable mode, where the source files are linked to
 instead of copied. This allows you to edit and run them if you wish. You may
 need to add ~/.local/bin to your PATH if you use `-e`.
 
-##Usage
-###Basic Invasion Success Probability
+## Usage
+### Basic Invasion Success Probability
 The most basic function of minerva is calculating an attack's probability of
 success.
 
@@ -42,7 +42,7 @@ Blue's territory, Red could run
 
 and immediately know his chances of victory.
 
-###Accounting For Retreats
+### Accounting For Retreats
 As accurate as the probability given above is, it isn't very helpful.
 Experienced _Risk_ players know that while *who* will win an invasion is
 usually easy to determine, knowing *how many* troops they will win with is more
@@ -63,7 +63,7 @@ In the above command, the -r option is the *retreat value*. This means that any
 scenario in which the attacking force shrinks to 7 or less before eliminating
 the defenders counts as a loss where the attacker retreats.
 
-###Wearing Down an Opponent's Forces
+### Wearing Down an Opponent's Forces
 The program can also do the opposite. In a different scenario, suppose that
 Green has 7 units in a territory. In an adjacent territory, Blue has a force of
 5 units that Green wants to reduce to 2 so that Red, her ally, can conquer the
@@ -92,7 +92,7 @@ opponent's forces without losing too many of your own, run a command such as
 
     $ minerva 10 6 -g 2 -r 5
 
-###Interactive Mode
+### Interactive Mode
 The above uses of minerva are great for evaluating a potential attack, but
 aren't very useful once an attack is underway. If you need the odds of success
 multiple times for the same invasion, typing an entire command with the
@@ -122,7 +122,7 @@ interactive mode in action:
 
 Both the ```-r``` and ```-g``` flags are compatible with interactive mode.
 
-###Campaign Mode
+### Campaign Mode
 Minerva can also be used to calculate the success of a series or invasions from
 a single territory, or *campaign*. To do this, simply provide more than one
 defender unit count, in order of attack, like so:
